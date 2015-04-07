@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 /**
  * This is a sample host in Node.js serving oembed.
