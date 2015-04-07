@@ -7,7 +7,7 @@
 		cheerioModule = require( 'cheerio' );
 
 	var strategy = {
-		regex: [ /^ck-plugin:(\w+)$/, /^(?:(?:https?\:\/\/)|(?:www\.)){1,2}ckeditor.com\/addon\/(\w+)$/ ],
+		regex: [ /^ck-plugin:(\w+)$/, /^(?:(?:https?\:\/\/)|(?:www\.)){1,2}ckeditor\.com\/addon\/(\w+)$/ ],
 		decorator: function( url, resp, httpResp, matches ) {
 			var pluginName = matches[ 1 ];
 
