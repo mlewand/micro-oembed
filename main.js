@@ -19,8 +19,6 @@ var sys = require( 'sys' ),
 	strats = [ 'ticket', 'ckPlugin' ],
 	Response;
 
-global.mediaEmbedJs = {};
-
 (function() {
 
 	// Various media content strategies, if a "URL" will be positively validated
@@ -46,16 +44,16 @@ global.mediaEmbedJs = {};
 		}
 	};
 
-	global.mediaEmbedJs.addStrategy = function( startegyId, strategyObject ) {
+	 function addStrategy( startegyId, strategyObject ) {
 		// This function will add new media strategy. It's intended to be called in
 		// modules, to split the logic to separate files and provide modularity.
 		contentStrategies[ startegyId ] = strategyObject;
-	};
+	}
 
 	// Inserting strategies encapsulated to modules.
 	strats.map( function( strategyName ) {
 		var strategyDefinition = require( './strategies/' + strategyName );
-		global.mediaEmbedJs.addStrategy( strategyName, strategyDefinition );
+		addStrategy( strategyName, strategyDefinition );
 	} );
 
 	/**
@@ -88,17 +86,26 @@ global.mediaEmbedJs = {};
 		};
 
 		this.setUrl = function( url ) {
+			var curStrategy;
+
 			url = String( url );
 			this.url = url;
 
 			for ( var i in contentStrategies ) {
-				if ( url.match( contentStrategies[ i ].regex ) ) {
-					this.setHtml( contentStrategies[ i ].decorator( url, this, httpResponseObject ) );
-					break;
+				curStrategy = contentStrategies[ i ];
+
+				if ( Array.isArray( curStrategy.regex ) ) {
+					if ( curStrategy.regex.some( url.match, url ) ) {
+						this.setHtml( curStrategy.decorator( url, this, httpResponseObject ) );
+					}
+				} else if ( curStrategy.regex instanceof RegExp && url.match( curStrategy.regex ) ) {
+					this.setHtml( curStrategy.decorator( url, this, httpResponseObject ) );
 				}
 			}
 
-			if ( !this.html ) {
+			if ( this.html ) {
+				this.type = 'rich';
+			} else {
 				// Nothing was matched...
 				this.setError( 'Unknown provider for URL "' + url + '".' );
 			}
@@ -128,9 +135,10 @@ global.mediaEmbedJs = {};
 //var resp = new Response( 'ck-plugin:quicktable', response, 'CKEDITOR._.oembedCallbacks[0]');
 
 httpModule.createServer( function( request, response ) {
-
-	if ( request.url == '/favicon.ico' )
+	// Ignore requests for browser icon.
+	if ( request.url == '/favicon.ico' ) {
 		return ;
+	}
 
 	var url = urlModule.parse( request.url, true ),
 		// JSONP encoded callback name (or flase if not given).
