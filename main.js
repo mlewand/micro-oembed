@@ -9,7 +9,10 @@
  *
  */
 
-var sys = require( "sys" ),
+var sys = require( 'sys' ),
+	cfg = {
+		port: 9090
+	},
 	urlModule = require( 'url' ),
 	httpModule = require( 'http' ),
 	Response;
@@ -131,11 +134,11 @@ httpModule.createServer( function( request, response ) {
 		resp = new Response( url.query.url, response, decodedCallbackName, url.query.delay );
 
 	console.log( 'Got request to: ' + request.url );
-	response.writeHeader( 200, { "Content-Type": "text/javascript" } );
+	response.writeHeader( 200, { 'Content-Type': 'text/javascript' } );
 
 	if ( !resp.async ) {
 		resp.finish();
 	}
-} ).listen( 8080 );
+} ).listen( cfg.port );
 
-sys.puts( "Server up and running at port: 8080" );
+sys.puts( 'Server up and running at port: ' + cfg.port );
