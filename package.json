@@ -1,0 +1,15 @@
+{
+	"name": "mediaembedjs",
+	"version": "0.0.0",
+	"description": "",
+	"main": "trac.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "CKSource",
+	"contributors": [ "Marek Lewandowski" ],
+	"license": "LGPL-3.0",
+	"dependencies": {
+		"cheerio": "^0.17.0"
+	}
+}
