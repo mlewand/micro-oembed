@@ -86,26 +86,29 @@ var sys = require( 'sys' ),
 		};
 
 		this.setUrl = function( url ) {
-			var curStrategy;
+			var isMatched = false,
+				curStrategy,
+				regExps,
+				matches;
 
 			url = String( url );
 			this.url = url;
 
 			for ( var i in contentStrategies ) {
 				curStrategy = contentStrategies[ i ];
+				regExps = Array.isArray ? curStrategy.regex : [ curStrategy.regex ];
 
-				if ( Array.isArray( curStrategy.regex ) ) {
-					if ( curStrategy.regex.some( url.match, url ) ) {
-						this.setHtml( curStrategy.decorator( url, this, httpResponseObject ) );
+				for ( var i = 0; i < regExps.length; i++ ) {
+					matches = url.match( regExps[ i ] );
+					if ( matches ) {
+						isMatched = true;
+						this.setHtml( curStrategy.decorator( url, this, httpResponseObject, matches ) );
+						break;
 					}
-				} else if ( curStrategy.regex instanceof RegExp && url.match( curStrategy.regex ) ) {
-					this.setHtml( curStrategy.decorator( url, this, httpResponseObject ) );
 				}
 			}
 
-			if ( this.html ) {
-				this.type = 'rich';
-			} else {
+			if ( !isMatched ) {
 				// Nothing was matched...
 				this.setError( 'Unknown provider for URL "' + url + '".' );
 			}

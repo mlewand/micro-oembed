@@ -7,13 +7,16 @@
 		cheerioModule = require( 'cheerio' );
 
 	var strategy = {
-		regex: [ /^ck-plugin:(\w+)$/, /^((?:https?\:\/\/)|(?:www\.)){1,2}ckeditor.com\/addon\/(\w+)$/ ],
-		decorator: function( url, resp, httpResp ) {
-			var pluginName = url.substring( 10 );
+		regex: [ /^ck-plugin:(\w+)$/, /^(?:(?:https?\:\/\/)|(?:www\.)){1,2}ckeditor.com\/addon\/(\w+)$/ ],
+		decorator: function( url, resp, httpResp, matches ) {
+			var pluginName = matches[ 1 ];
 
 			// This strategy is async, so lets mark response as async, and we'll
 			// take care of calling `end()` for the http response.
 			resp.async = true;
+			resp.type = 'rich';
+
+			console.log( 'Looking for a plugin "%s"...', pluginName);
 
 			var options = {
 					host: "ckeditor.com",
