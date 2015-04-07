@@ -47,7 +47,7 @@
 
 					var descrParagraphs = addonPage( '#stats_data' ).next().find( 'p' ).slice( 0, 2 );
 
-					// Add-on info readed from page markup.
+					// Add-on info readen from page markup.
 					var addonInfo = {
 						name: addonPage( '#stats_data' ).next().find( 'h2' ).first().text(),
 						descr: Array.prototype.map.call( descrParagraphs, function( el ) {
