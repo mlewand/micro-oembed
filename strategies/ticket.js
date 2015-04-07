@@ -1,14 +1,14 @@
 
-if ( !global.mediaEmbedJs ) {
-	throw new Error ( 'No mediaEmbedJs object in global scope!' );
-}
+(function() {
+	"use strict";
 
-global.mediaEmbedJs.addStrategy( 'ticket', {
-	regex: /^\#\d+$/,
-	decorator: function( url ) {
-		var ticketNumber = url.substring( 1 ),
-			ticketLink = '<a href="http://dev.ckeditor.com/ticket/' + ticketNumber + '">#' + ticketNumber + '</a>';
+	module.exports = {
+		regex: /^\#\d+$/,
+		decorator: function( url ) {
+			var ticketNumber = url.substring( 1 ),
+				ticketLink = '<a href="http://dev.ckeditor.com/ticket/' + ticketNumber + '">#' + ticketNumber + '</a>';
 
-		return 'Ticket ' + ticketLink;
-	}
-} );
+			return 'Ticket ' + ticketLink;
+		}
+	};
+}());

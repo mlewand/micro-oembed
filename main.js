@@ -15,6 +15,8 @@ var sys = require( 'sys' ),
 	},
 	urlModule = require( 'url' ),
 	httpModule = require( 'http' ),
+	// Strategies to be loaded from /strategies/ directory.
+	strats = [ 'ticket', 'ckPlugin' ],
 	Response;
 
 global.mediaEmbedJs = {};
@@ -51,8 +53,10 @@ global.mediaEmbedJs = {};
 	};
 
 	// Inserting strategies encapsulated to modules.
-	require( './strategies/ticket' );
-	require( './strategies/ckPlugin' );
+	strats.map( function( strategyName ) {
+		var strategyDefinition = require( './strategies/' + strategyName );
+		global.mediaEmbedJs.addStrategy( strategyName, strategyDefinition );
+	} );
 
 	/**
 	 * httpResponseObject is needed for async operations to close connection
