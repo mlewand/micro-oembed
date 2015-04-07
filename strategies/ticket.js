@@ -62,6 +62,7 @@
 				ticketLink = '<a href="http://dev.ckeditor.com/ticket/' + ticketNumber + '">#' + ticketNumber + '</a>';
 
 			resp.async = true;
+			resp.provider_name = 'tracTicket';
 
 			fetchTicketInfo( ticketNumber, resp, function( info ) {
 				console.log( 'Ticket ' + ticketNumber + ' loaded.' );

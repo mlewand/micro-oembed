@@ -14,6 +14,7 @@
 			// This strategy is async, so lets mark response as async, and we'll
 			// take care of calling `end()` for the http response.
 			resp.async = true;
+			resp.provider_name = 'CKEditorPlugin';
 			resp.type = 'rich';
 
 			console.log( 'Looking for a plugin "%s"...', pluginName);
