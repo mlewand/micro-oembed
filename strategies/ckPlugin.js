@@ -35,7 +35,6 @@
 
 				res.on("end", function () {
 					fs.writeFileSync( 'out.html', content, 'utf8' );
-					console.log( 'parsing' );
 					var addonPage = cheerioModule.load( content ),
 						pluginFound = addonPage( '#stats_data' ).length > 0;
 
@@ -58,9 +57,6 @@
 					};
 
 
-					console.log( addonInfo );
-					console.log( 'good' );
-
 					resp.setHtml( '<h2>' + addonInfo.name + '</h2>' +
 						'<img src="' + addonInfo.img + '" alt="Plugin icon">' +
 						'<p>' + addonInfo.descr + '</p>' +
@@ -72,7 +68,7 @@
 			});
 
 			req.on( 'error', function() {
-				console.log( 'Request error occured' );
+				console.log( 'Plugin request error occured' );
 				resp.setHtml( 'Failed to find ' + pluginName + ' in CKEditor Add-ons repository :(' );
 				resp.finish();
 			} );
